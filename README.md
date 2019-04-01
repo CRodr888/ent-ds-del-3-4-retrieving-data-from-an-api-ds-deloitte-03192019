@@ -169,6 +169,25 @@ Take a few minutes to explore the `data` variable. There are a couple of sample 
 
 Try to create a DataFrame called `articles` containing the URLs, abstracts, word counts and types of materials for all of the articles!
 
+
+```python
+import pandas as pd
+
+dfcols = ['URL', 'Abstract', "Word Count", "Type of Material"]
+articles = pd.DataFrame(columns=dfcols)
+
+docs = data.get("response").get("docs")
+
+for doc in docs:
+    url = doc['web_url']
+    abstract = doc['abstract']
+    word_count = doc['word_count']
+    type_of_material = doc['type_of_material']
+    articles = articles.append(pd.Series([url, abstract, word_count, type_of_material], index=dfcols), ignore_index=True)
+
+articles.head ()
+```
+
 Now have a look at the structure of the data frame - lets start with looking at the first 5 articles . . .
 
 
@@ -184,6 +203,28 @@ articles['Type of Material'].value_counts()
 ```
 
 Next up, create a new DataFrame called `news_articles` that only contains News articles.
+
+
+```python
+import pandas as pd
+
+dfcols = ['URL', 'Abstract', "Word Count", "Type of Material"]
+news_articles = pd.DataFrame(columns=dfcols)
+
+docs = data.get("response").get("docs")
+
+for doc in docs:
+    url = doc['web_url']
+    abstract = doc['abstract']
+    word_count = doc['word_count']
+    type_of_material = doc['type_of_material']
+    if type_of_material == "News":
+        news_articles = news_articles.append(pd.Series([url, abstract, word_count, type_of_material], index=dfcols), ignore_index=True)
+
+print(news_articles.info())
+print(news_articles["Type of Material"].value_counts())
+news_articles.head()
+```
 
 ## Extra Credit (1)
 
